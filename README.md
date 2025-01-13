@@ -20,7 +20,8 @@ This repository contains a **Python-based graphical user interface (GUI)** progr
 ### **Prime Factor Finder**  
 - **Calculate Largest Prime Factor**: Computes the largest prime factor of a given number.  
 - **Input Validation**: Provides feedback if the input is invalid (e.g., 0, 1, or negative numbers).  
-- **Error Handling**: Includes safeguards against invalid inputs with user-friendly error messages.  
+- **Error Handling**: Includes safeguards against invalid inputs with user-friendly error messages.
+- **History tracking**: View a history of previous calculations. 
 
 ---
 
@@ -30,25 +31,6 @@ The application is designed with a clean and intuitive layout:
 - Separate sections for **Set Operations**, **Tuple Operations**, and **Prime Factor Calculation**.  
 - Buttons for specific operations such as **Insert**, **Delete**, **Calculate**, and **Clear**.  
 - Real-time feedback displayed directly in the GUI.  
-
----
-
-## **How to Use**  
-
-### **Set Operations**  
-1. Click on the **Set** button to access set operations.  
-2. Use the **Insert** button to add elements and the **Delete** button to remove specific elements.  
-3. View the updated set dynamically on the screen.  
-
-### **Tuple Operations**  
-1. Click on the **Tuple** button to manage tuple operations.  
-2. Use the **Insert** button to append elements and the **Delete** button to reset the tuple.  
-
-### **Prime Factor Finder**  
-1. Enter a valid integer in the input field.  
-2. Click **Calculate** to find the largest prime factor.  
-3. Use the **Clear** button to reset the input field and result display.
-4. History tracking: View a history of previous calculations.
 
 ---
 
