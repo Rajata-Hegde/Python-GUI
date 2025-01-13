@@ -47,7 +47,8 @@ The application is designed with a clean and intuitive layout:
 ### **Prime Factor Finder**  
 1. Enter a valid integer in the input field.  
 2. Click **Calculate** to find the largest prime factor.  
-3. Use the **Clear** button to reset the input field and result display.  
+3. Use the **Clear** button to reset the input field and result display.
+4. History tracking: View a history of previous calculations.
 
 ---
 
@@ -55,4 +56,4 @@ The application is designed with a clean and intuitive layout:
 
 1. Clone this repository:  
    ```bash
-  git clone https://github.com/Rajata-Hegde/python-GUI.git
+   git clone https://github.com/Rajata-Hegde/python-GUI.git
