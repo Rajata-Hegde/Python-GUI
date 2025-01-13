@@ -1,101 +1,253 @@
 from tkinter import *
-from tkinter import messagebox
-def clear():
-    window.destroy()
-    create_main_window()
-def exo():
-    window.destroy()
-    create_main_window()
-def show():
-    global f_entry,tuple_data
-    a = f_entry.get()
-    set_data.add(a)
-    result_label.config(text=f"the set is {set_data}",font=("arial black",25),bg="#97eb9d")
-def addition():
-    global f_entry
-    add_label=Label(window,text="enter the elements to add",font=("arial black",20))
-    add_label.pack()
-    f_entry=Entry(window)
-    f_entry.pack()
-    display_button=Button(text="display the set",command=show,font=("times new horizon",15),bg="sky blue")
-    display_button.pack(pady=10)
-def remove():
-    global f_entry
-    a = f_entry.get()
-    if a in set_data:
-        set_data.discard(a)
-        result_label.config(text=f"the set is {set_data}",bg="#97eb9d")
-    else:
-        messagebox.showinfo(title="warning",message="Error")
-def dele():
-    global f_entry
-    add_label = Label(window, text="enter the element to delete",font=("arial black",20))
-    add_label.pack()
-    f_entry = Entry(window)
-    f_entry.pack()
-    display2_button = Button(text="display the set after deleting", command=remove,font=("arial black",20),bg="sky blue")
-    display2_button.pack(pady=10)
-def set_operations():
-    add_button=Button(window,text="insert",command=addition,font=("times new roman",15),bg="sky blue")
-    add_button.pack()
-    del_button=Button(window,text="delete",command=dele,font=("times new roman",15),bg="sky blue")
-    del_button.pack()
-    clear_button = Button(window, text="exit from set", command=clear,font=("times new roman",15),bg="sky blue")
-    clear_button.pack()
-def see():
-    global f_entry,tuple_data
-    a = f_entry.get()
-    tuple_data= tuple_data + (a,)
-    result_label.config(text=f"the tuple is {tuple_data}",font=("arial black",25),bg="#97eb9d")
-def insertion():
-    global f_entry
-    add_label = Label(window, text="enter the elements to add",font=("arial black",20))
-    add_label.pack()
-    f_entry = Entry(window)
-    f_entry.pack()
-    display_button = Button(text="display the tuple",font=("times new horizon",15), command=see,bg="yellow")
-    display_button.pack()
-def deletion():
-    global tuple_data
-    del(tuple_data)
-    result_label.config(text="the entire tuple is deleted",font=("arial black",25),bg="#97eb9d")
-def tuple_operations():
-    add_button = Button(window, text="insert",command=insertion,bg="yellow",font=("times new roman",15))
-    add_button.pack()
-    del_button = Button(window, text="delete",command=deletion,bg="yellow",font=("times new roman",15))
-    del_button.pack()
-    exit_button = Button(window, text="exit from tuple",command=exo,bg="yellow",font=("times new roman",15))
-    exit_button.pack()
-def exit_op():
-    exit(0)
-def create_main_window():
-    global window, result_label, set_data,tuple_data
-    window=Tk()
-    photo=PhotoImage(file="C:\\Users\\rajat\\OneDrive\\Desktop\\first sem\\coding\\Python-GUI\\rv new logo.png").subsample(2,2)
-    set_data = set()
-    tuple_data = tuple()
-    window.title("python GUI programme for set and tuple operations")
-    window.config(background="#ff9999")
-    label=Label(window,
-                image=photo,
-                compound="left",
-                 text="This is the gui programme to implement set and tuple operations"
-                      "\n by clicking on set you will get options like insert and delete insert helps to add elements to set\nand delete option used to delete the particular value from set"
-                      "\n tuple has options like adding values and delete the entire tuple \n terminate will exit the screen"
-                      "\n CLICK ON THE OPTION YOU WANT",font=("Calibri",14),bg="#ffe6e6")
-    label.pack()
-    label2 = Label(window, text="click on the choice you want",font=("arial black",20),bg="yellow")
-    label2.pack(side="left")
-    set_button=Button(window,
-           text="set",command=set_operations,bg="violet",font=("arial black",20))
-    set_button.pack(side="left",pady=5,padx=10)
-    tup_button=Button(window,
-           text="tuple",command=tuple_operations,bg="violet",font=("arial black",20))
-    tup_button.pack(side="left",pady=5,padx=10)
-    exit_button=Button(window,
-           text="terminate",command=exit_op,bg="violet",font=("arial black",20))
-    exit_button.pack(side="left",pady=5,padx=10)
-    result_label = Label(window)
-    result_label.pack()
-    window.mainloop()
-create_main_window()
+from tkinter import messagebox, ttk
+from typing import Union
+
+class DataStructureGUI:
+    def __init__(self):
+        self.window = None
+        self.input_entry = None
+        self.result_label = None
+        self.set_data = set()
+        self.tuple_data = ()
+        self.current_mode = None
+        self.create_main_window()
+
+    def create_main_window(self):
+        self.window = Tk()
+        self.window.title("Data Structure Operations GUI")
+        self.window.geometry("800x600")
+        self.window.configure(bg="#f0f0f0")
+        
+        # Create main container with padding
+        main_container = Frame(self.window, bg="#f0f0f0", padx=20, pady=20)
+        main_container.pack(fill=BOTH, expand=True)
+        
+        # Header
+        header_frame = Frame(main_container, bg="#f0f0f0")
+        header_frame.pack(fill=X, pady=(0, 20))
+        
+        try:
+            photo = PhotoImage(file="python-GUI/rv new logo.png").subsample(2, 2)
+            logo_label = Label(header_frame, image=photo, bg="#f0f0f0")
+            logo_label.image = photo  # Keep a reference
+            logo_label.pack(side=LEFT, padx=(0, 20))
+        except:
+            # Gracefully handle missing image
+            pass
+        
+        # Title and description
+        title_label = Label(
+            header_frame,
+            text="Data Structure Operations",
+            font=("Helvetica", 24, "bold"),
+            bg="#f0f0f0",
+            fg="#333333"
+        )
+        title_label.pack(fill=X)
+        
+        description = """
+        This application allows you to perform operations on Sets and Tuples.
+        • Set Operations: Add elements, remove specific items
+        • Tuple Operations: Add elements, clear entire tuple
+        Select an operation type below to begin.
+        """
+        desc_label = Label(
+            main_container,
+            text=description,
+            font=("Helvetica", 12),
+            bg="#f0f0f0",
+            fg="#666666",
+            justify=LEFT
+        )
+        desc_label.pack(fill=X, pady=(0, 20))
+        
+        # Buttons container
+        button_frame = Frame(main_container, bg="#f0f0f0")
+        button_frame.pack(fill=X, pady=20)
+        
+        # Style for buttons
+        button_style = {
+            "font": ("Helvetica", 12, "bold"),
+            "width": 15,
+            "height": 2,
+            "borderwidth": 0,
+            "cursor": "hand2"
+        }
+        
+        set_button = Button(
+            button_frame,
+            text="Set Operations",
+            command=self.setup_set_operations,
+            bg="#4CAF50",
+            fg="white",
+            **button_style
+        )
+        set_button.pack(side=LEFT, padx=10)
+        
+        tuple_button = Button(
+            button_frame,
+            text="Tuple Operations",
+            command=self.setup_tuple_operations,
+            bg="#2196F3",
+            fg="white",
+            **button_style
+        )
+        tuple_button.pack(side=LEFT, padx=10)
+        
+        exit_button = Button(
+            button_frame,
+            text="Exit",
+            command=self.window.quit,
+            bg="#f44336",
+            fg="white",
+            **button_style
+        )
+        exit_button.pack(side=LEFT, padx=10)
+        
+        # Operations frame
+        self.operations_frame = Frame(main_container, bg="#f0f0f0")
+        self.operations_frame.pack(fill=BOTH, expand=True)
+        
+        # Result label
+        self.result_label = Label(
+            main_container,
+            text="",
+            font=("Helvetica", 14),
+            bg="#f0f0f0",
+            wraplength=700
+        )
+        self.result_label.pack(fill=X, pady=20)
+
+    def clear_operations_frame(self):
+        for widget in self.operations_frame.winfo_children():
+            widget.destroy()
+        self.result_label.config(text="")
+
+    def setup_set_operations(self):
+        self.clear_operations_frame()
+        self.current_mode = "set"
+        
+        # Input frame
+        input_frame = Frame(self.operations_frame, bg="#f0f0f0")
+        input_frame.pack(fill=X, pady=20)
+        
+        Label(
+            input_frame,
+            text="Enter element:",
+            font=("Helvetica", 12),
+            bg="#f0f0f0"
+        ).pack(side=LEFT, padx=5)
+        
+        self.input_entry = Entry(input_frame, font=("Helvetica", 12))
+        self.input_entry.pack(side=LEFT, padx=5)
+        
+        # Operation buttons
+        Button(
+            input_frame,
+            text="Add Element",
+            command=self.add_element,
+            bg="#4CAF50",
+            fg="white",
+            font=("Helvetica", 10)
+        ).pack(side=LEFT, padx=5)
+        
+        Button(
+            input_frame,
+            text="Remove Element",
+            command=self.remove_element,
+            bg="#f44336",
+            fg="white",
+            font=("Helvetica", 10)
+        ).pack(side=LEFT, padx=5)
+        
+        self.update_result()
+
+    def setup_tuple_operations(self):
+        self.clear_operations_frame()
+        self.current_mode = "tuple"
+        
+        # Input frame
+        input_frame = Frame(self.operations_frame, bg="#f0f0f0")
+        input_frame.pack(fill=X, pady=20)
+        
+        Label(
+            input_frame,
+            text="Enter element:",
+            font=("Helvetica", 12),
+            bg="#f0f0f0"
+        ).pack(side=LEFT, padx=5)
+        
+        self.input_entry = Entry(input_frame, font=("Helvetica", 12))
+        self.input_entry.pack(side=LEFT, padx=5)
+        
+        # Operation buttons
+        Button(
+            input_frame,
+            text="Add Element",
+            command=self.add_element,
+            bg="#2196F3",
+            fg="white",
+            font=("Helvetica", 10)
+        ).pack(side=LEFT, padx=5)
+        
+        Button(
+            input_frame,
+            text="Clear Tuple",
+            command=self.clear_tuple,
+            bg="#f44336",
+            fg="white",
+            font=("Helvetica", 10)
+        ).pack(side=LEFT, padx=5)
+        
+        self.update_result()
+
+    def add_element(self):
+        value = self.input_entry.get().strip()
+        if not value:
+            messagebox.showwarning("Warning", "Please enter a value")
+            return
+            
+        if self.current_mode == "set":
+            self.set_data.add(value)
+        else:  # tuple
+            self.tuple_data += (value,)
+            
+        self.input_entry.delete(0, END)
+        self.update_result()
+
+    def remove_element(self):
+        value = self.input_entry.get().strip()
+        if not value:
+            messagebox.showwarning("Warning", "Please enter a value")
+            return
+            
+        if value in self.set_data:
+            self.set_data.remove(value)
+            self.input_entry.delete(0, END)
+            self.update_result()
+        else:
+            messagebox.showwarning("Warning", "Element not found in set")
+
+    def clear_tuple(self):
+        if messagebox.askyesno("Confirm", "Are you sure you want to clear the tuple?"):
+            self.tuple_data = ()
+            self.update_result()
+
+    def update_result(self):
+        if self.current_mode == "set":
+            self.result_label.config(
+                text=f"Current Set: {self.set_data}",
+                fg="#4CAF50"
+            )
+        else:  # tuple
+            self.result_label.config(
+                text=f"Current Tuple: {self.tuple_data}",
+                fg="#2196F3"
+            )
+
+    def run(self):
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    app = DataStructureGUI()
+    app.run()
